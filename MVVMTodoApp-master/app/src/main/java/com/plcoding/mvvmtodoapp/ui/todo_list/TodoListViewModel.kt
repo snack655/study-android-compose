@@ -2,6 +2,7 @@ package com.plcoding.mvvmtodoapp.ui.todo_list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.plcoding.mvvmtodoapp.data.Todo
 import com.plcoding.mvvmtodoapp.data.TodoRepository
 import com.plcoding.mvvmtodoapp.util.Routes
@@ -19,7 +20,7 @@ class TodoListViewModel @Inject constructor(
 
     val todos = repository.getTodos()
 
-    private val _uiEvent =  Channel<UiEvent>()
+    private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
     private var deletedTodo: Todo? = null

@@ -9,3 +9,4 @@ sealed class TodoListEvent {
     data class OnTodoClick(val todo: Todo): TodoListEvent()
     object OnAddTodoClick: TodoListEvent()
 }
+
