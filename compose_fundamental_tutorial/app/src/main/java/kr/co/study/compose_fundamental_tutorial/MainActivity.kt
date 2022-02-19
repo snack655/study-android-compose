@@ -1,13 +1,14 @@
 package kr.co.study.compose_fundamental_tutorial
 
-import android.content.res.Resources
 import android.os.Bundle
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -16,10 +17,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.*
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import kr.co.study.compose_fundamental_tutorial.ui.theme.Compose_fundamental_tutorialTheme
-import java.util.concurrent.TimeoutException
 import kotlin.random.Random
 
 class MainActivity : ComponentActivity() {
@@ -35,7 +44,8 @@ class MainActivity : ComponentActivity() {
                     //Greeting("Android")
                     //Container()
                     //VerticalContainer()
-                    BoxWithConstraintContainer()
+                    //BoxWithConstraintContainer()
+                    TextContainer()
                 }
             }
         }
@@ -160,14 +170,119 @@ fun DummyBox(modifier: Modifier = Modifier, color: Color? = null) {
 //    Text(text = "Hello $name!")
 //}
 
+@Composable
+fun TextContainer() {
+    val name = "최민재"
+    val context = LocalContext.current
+
+    val scrollState = rememberScrollState()
+
+    var words = stringResource(id = R.string.dummy_short_text)
+    var wordsArray = words.split(" ")
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(10.dp)
+            .verticalScroll(scrollState),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        Text(text = "안녕하세요? $name",
+            style = TextStyle(
+              textAlign = TextAlign.Center
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.Magenta)
+        )
+        Text(text = "안녕하세요? $name",
+            style = TextStyle(
+                textAlign = TextAlign.Start
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.Green)
+        )
+        Text(text = stringResource(id = R.string.dummy_short_text),
+            maxLines = 3,
+            overflow = TextOverflow.Ellipsis,
+            style = TextStyle(
+                textAlign = TextAlign.Justify,
+                textDecoration = TextDecoration.combine(
+                    listOf(
+                        TextDecoration.LineThrough,
+                        TextDecoration.Underline
+                    )
+                )
+            ),
+            fontWeight = FontWeight.W200,
+            fontSize = 30.sp,
+            fontFamily = FontFamily.Monospace,
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.Cyan)
+        )
+
+        Text(text = stringResource(id = R.string.dummy_short_text),
+            style = TextStyle(
+                textAlign = TextAlign.Start,
+                fontFamily = FontFamily(Font(R.font.garang, weight = FontWeight.ExtraBold))
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.Yellow),
+            fontSize = 30.sp
+        )
+
+        Text(text = buildAnnotatedString {
+            append("안녕하세요?")
+            withStyle(style = SpanStyle(color = Color.Blue,
+                                fontSize = 40.sp,
+                                fontWeight = FontWeight.ExtraBold)
+            ) {
+                append("개발하는 최민재입니다!\n")
+            }
+            withStyle(style = SpanStyle(color = Color.Red,
+                                fontSize = 30.sp)
+            ){
+                append("히히히히ㅣㅎ")
+            }
+        })
+
+        Text(text = buildAnnotatedString {
+            wordsArray.forEach {
+                if (it.contains("인생")) {
+                    withStyle(style = SpanStyle(color = Color.Blue,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.ExtraBold
+                    )) {
+                        append("$it ")
+                        Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+                    }
+                }else {
+                    append("$it ")
+                }
+            }
+        })
+
+        ClickableText(text = AnnotatedString("클릭미!"), onClick = {
+            Toast.makeText(context, "뀨잉", Toast.LENGTH_SHORT).show() },
+        style = TextStyle(color = Color.Red, fontSize = 30.sp, fontFamily = FontFamily(Font(R.font.garang))))
+
+        Text(text = stringResource(id = R.string.dummy_long_text),
+            style = TextStyle(lineHeight = 20.sp))
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
+fun MyPreView() {
     Compose_fundamental_tutorialTheme {
         //Container()
         //Greeting("Android")
         //VerticalContainer()
         //BoxContainer()
-        BoxWithConstraintContainer()
+        //BoxWithConstraintContainer()
+        TextContainer()
     }
 }
