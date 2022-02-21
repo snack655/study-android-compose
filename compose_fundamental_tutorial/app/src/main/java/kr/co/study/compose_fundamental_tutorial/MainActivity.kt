@@ -1,10 +1,17 @@
 package kr.co.study.compose_fundamental_tutorial
 
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -12,10 +19,7 @@ import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,16 +38,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.LayoutDirection
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.*
 import kr.co.study.compose_fundamental_tutorial.ui.theme.Compose_fundamental_tutorialTheme
 import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.random.Random
 
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -58,7 +60,8 @@ class MainActivity : ComponentActivity() {
                     //VerticalContainer()
                     //BoxWithConstraintContainer()
                     //TextContainer()
-                    ShapeContainer()
+                    //ShapeContainer()
+                    ButtonsContainer()
                 }
             }
         }
@@ -365,6 +368,123 @@ fun Path.polygon(sides: Int, radius: Float, center: Offset) {
     close()
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+fun ButtonsContainer() {
+
+    val buttonBorderGradient = Brush.horizontalGradient(listOf(Color.Yellow, Color.Red))
+    val button4Disable = remember { mutableStateOf(true) }
+    
+    val interactionSourceForFirst = remember { MutableInteractionSource() }
+
+    val interactionSourceForSecond = remember { MutableInteractionSource() }
+
+    val isPressedForFirst by interactionSourceForFirst.collectIsPressedAsState()
+    val isPressedForSecond by interactionSourceForSecond.collectIsPressedAsState()
+
+    val pressedStatusTitle = if (isPressedForFirst || isPressedForSecond) "버튼을 누르고 있다." else "버튼에서 손을 뗐다."
+
+    val pressedBtnRadiusWithAnim: Dp by animateDpAsState(
+        if (isPressedForSecond) 0.dp else 10.dp
+    )
+
+    Column(
+        modifier = Modifier
+            .background(Color.White)
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.SpaceEvenly,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Button(
+            elevation = ButtonDefaults.elevation(
+                defaultElevation = 0.dp
+            ),
+            enabled = true,
+            onClick = {
+            Log.d("TestTest", "ButtonsContainer: 버튼 1 클릭")
+        }) {
+            Text(text = "버튼 1")
+        }
+        Button(
+            elevation = ButtonDefaults.elevation(
+                defaultElevation = 10.dp,
+                pressedElevation = 0.dp,
+                disabledElevation = 0.dp
+            ),
+            enabled = true,
+            onClick = {
+                Log.d("TestTest", "ButtonsContainer: 버튼 2 클릭")
+            }) {
+            Text(text = "버튼 2")
+        }
+        Button(
+            elevation = ButtonDefaults.elevation(
+                defaultElevation = 10.dp,
+                pressedElevation = 0.dp,
+                disabledElevation = 0.dp
+            ),
+            enabled = true,
+            shape = RoundedCornerShape(10.dp),
+            contentPadding = PaddingValues(top = 15.dp, bottom = 15.dp, start = 20.dp, end = 20.dp),
+            onClick = {
+                Log.d("TestTest", "ButtonsContainer: 버튼 3 클릭")
+                button4Disable.value = !button4Disable.value
+            }) {
+            Text(text = "버튼 3")
+        }
+
+        Button(
+            elevation = ButtonDefaults.elevation(
+                defaultElevation = 10.dp,
+                pressedElevation = 0.dp,
+                disabledElevation = 0.dp
+            ),
+            enabled = button4Disable.value,
+            shape = RoundedCornerShape(10.dp),
+            border = BorderStroke(4.dp, buttonBorderGradient),
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = Color.Black,
+                disabledBackgroundColor = Color.LightGray
+            ),
+            interactionSource = interactionSourceForFirst,
+            onClick = {
+                Log.d("TestTest", "ButtonsContainer: 버튼 4 클릭")
+            }) {
+            Text(text = "버튼 4", color = Color.White)
+        }
+
+        Button(
+            elevation = ButtonDefaults.elevation(
+                defaultElevation = 0.dp,
+                pressedElevation = 0.dp,
+                disabledElevation = 0.dp
+            ),
+            enabled = button4Disable.value,
+            shape = RoundedCornerShape(10.dp),
+            border = BorderStroke(4.dp, buttonBorderGradient),
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = Color.Black,
+                disabledBackgroundColor = Color.LightGray
+            ),
+            interactionSource = interactionSourceForSecond,
+            modifier = Modifier.drawColoredShadow(
+                color = Color.Red,
+                alpha = 0.5f,
+                borderRadius = 10.dp,
+                shadowRadius = pressedBtnRadiusWithAnim,
+                offsetY = 0.dp,
+                offsetX = 0.dp
+            ),
+            onClick = {
+                Log.d("TestTest", "ButtonsContainer: 버튼 5 클릭")
+            }) {
+            Text(text = "버튼 5", color = Color.White)
+        }
+        Text(text = "$pressedStatusTitle")
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 fun MyPreview() {
@@ -375,6 +495,7 @@ fun MyPreview() {
         //BoxContainer()
         //BoxWithConstraintContainer()
         //TextContainer()
-        ShapeContainer()
+        //ShapeContainer()
+        ButtonsContainer()
     }
 }
