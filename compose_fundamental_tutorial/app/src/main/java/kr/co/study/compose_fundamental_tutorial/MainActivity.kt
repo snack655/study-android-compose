@@ -8,18 +8,16 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
+import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,6 +27,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.geometry.center
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.*
 import androidx.compose.ui.text.font.Font
@@ -61,7 +60,8 @@ class MainActivity : ComponentActivity() {
                     //BoxWithConstraintContainer()
                     //TextContainer()
                     //ShapeContainer()
-                    ButtonsContainer()
+                    //ButtonsContainer()
+                    CheckBoxContainer()
                 }
             }
         }
@@ -484,6 +484,183 @@ fun ButtonsContainer() {
     }
 }
 
+@Composable
+fun CheckBoxContainer() {
+
+    val checkedStatusForFirst = remember { mutableStateOf(false) }
+    val checkedStatusForSecond = remember { mutableStateOf(false) }
+    val checkedStatusForThird = remember { mutableStateOf(false) }
+//    val checkedStatusForFourth = remember { mutableStateOf(false) }
+
+    val checkedStatesArray = listOf(
+                                checkedStatusForFirst,
+                                checkedStatusForSecond,
+                                checkedStatusForThird,
+                            )
+
+    val allBoxChecked: (Boolean) -> Unit = { isAllBoxChecked ->
+        Log.d("TestTest", "CheckBoxContainer: isAllBoxChecked: $isAllBoxChecked")
+        checkedStatesArray.forEach { it.value = isAllBoxChecked }
+    }
+
+ //   val checkedStatusForFourth: Boolean = checkedStatesArray.all { it.value == true }
+    val checkedStatusForFourth: Boolean = checkedStatesArray.all { it.value }
+
+
+    //var checkedStatusForSecond by remember { mutableStateOf(false) }
+
+    //var (checkedStatusForThird, setCheckedStatusForThird) = remember { mutableStateOf(false) }
+
+    //var (checkedStatusForFourth, setCheckedStatusForFourth) = remember { mutableStateOf(false) }
+
+
+    Column(
+        modifier = Modifier
+            .background(Color.White)
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        CheckBoxWithTitle(title = "1번 확인사항", checkedStatusForFirst)
+        CheckBoxWithTitle(title = "2번 확인사항", checkedStatusForSecond)
+        CheckBoxWithTitle(title = "3번 확인사항", checkedStatusForThird)
+        /*Checkbox(
+            enabled = true,
+            checked = checkedStatusForSecond,
+            onCheckedChange = { isChecked ->
+                Log.d("TestTest", "CheckBoxContainer: isChecked: $isChecked")
+                checkedStatusForSecond = isChecked }
+        )
+        Checkbox(
+            enabled = true,
+            checked = checkedStatusForThird,
+            onCheckedChange = {
+                Log.d("TestTest", "CheckBoxContainer: isChecked: $it")
+                setCheckedStatusForThird.invoke(it) }
+        )*/
+        Spacer(modifier = Modifier.height(10.dp))
+        AllAgreeCheckBox(title = "모두 동의하십니까?", shouldChecked = checkedStatusForFourth, allBoxChecked)
+        Spacer(modifier = Modifier.height(10.dp))
+        MyCustomCheckBox(title = "커스텀 체크박스 리플 O", withRipple = true)
+        MyCustomCheckBox(title = "커스텀 체크박스 리플 X", withRipple = false)
+
+        /*Checkbox(
+            enabled = true,
+            checked = checkedStatusForFourth,
+            colors = CheckboxDefaults.colors(
+                checkedColor = Color.Red,
+                uncheckedColor = Color(0xFFFFC700),
+                checkmarkColor = Color.Black,
+                disabledColor = Color(0xFF005EFF)
+            ),
+            onCheckedChange = {
+                Log.d("TestTest", "CheckBoxContainer: isChecked: $it")
+                setCheckedStatusForFourth.invoke(it) }
+        )*/
+    }
+}
+
+@Composable
+fun CheckBoxWithTitle(title: String, isCheckedState: MutableState<Boolean>) {
+    Row(
+        modifier = Modifier
+//            .background(Color.Yellow)
+            .padding(horizontal = 30.dp)
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        Checkbox(
+            enabled = true,
+            checked = isCheckedState.value,
+            onCheckedChange = { isChecked ->
+                Log.d("TestTest", "CheckBoxContainer: isChecked: $isChecked")
+                isCheckedState.value = isChecked
+            }
+        )
+        Text(text = title)
+    }
+}
+
+@Composable
+fun AllAgreeCheckBox(
+    title: String,
+    shouldChecked: Boolean,
+    allBoxChecked: (Boolean) -> Unit
+) {
+    Row(
+        modifier = Modifier
+//            .background(Color.Yellow)
+            .padding(horizontal = 30.dp)
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        Checkbox(
+            enabled = true,
+            checked = shouldChecked,
+            colors = CheckboxDefaults.colors(
+                checkedColor = Color.Red,
+                uncheckedColor = Color(0xFFFFC700),
+                checkmarkColor = Color.White,
+                disabledColor = Color(0xFF005EFF)
+            ),
+            onCheckedChange = { isChecked ->
+                Log.d("TestTest", "CheckBoxContainer: isChecked: $isChecked")
+//                isCheckedState.value = isChecked
+                allBoxChecked(isChecked)
+            }
+        )
+        Text(text = title)
+    }
+}
+
+@Composable
+fun MyCustomCheckBox(title: String, withRipple: Boolean = false) {
+
+    //var isCheckedState by remember { mutableStateOf(false) }
+    //var isCheckt =  remember { mutableStateOf(false) }
+    var (isChecked, setIsChecked) = remember { mutableStateOf(false) }
+
+    var togglePainter = if (isChecked) R.drawable.ic_checked else R.drawable.ic_unchecked
+
+    var checkedInfoString = if (isChecked) "체크됨" else "체크안됨"
+
+    var rippleEffect = if (withRipple) rememberRipple(
+        radius = 30.dp,
+        bounded = false,
+        color = Color.Blue
+    ) else null
+
+    Row(
+        modifier = Modifier
+//            .background(Color.Yellow)
+            .padding(horizontal = 30.dp)
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .size(60.dp)
+                .clickable(
+                    indication = rippleEffect,
+                    interactionSource = remember { MutableInteractionSource() }
+                ) {
+                    setIsChecked.invoke(!isChecked)
+                    Log.d("TestTest", "MyCustomCheckBox: 클릭이 되었다! / $isChecked")
+                }
+        ) {
+            Image(
+                painter = painterResource(id = togglePainter),
+                contentDescription = null
+            )
+        }
+        Text(text = "$title / $checkedInfoString")
+    }
+}
+
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
@@ -496,6 +673,7 @@ fun MyPreview() {
         //BoxWithConstraintContainer()
         //TextContainer()
         //ShapeContainer()
-        ButtonsContainer()
+        //ButtonsContainer()
+        CheckBoxContainer()
     }
 }
