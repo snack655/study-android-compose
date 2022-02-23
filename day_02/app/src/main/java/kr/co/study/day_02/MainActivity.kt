@@ -33,7 +33,15 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     color = MaterialTheme.colors.background
                 ) {
-                    PhotographerCard(modifier = Modifier.fillMaxWidth())
+                    PhotographerCard(modifier = Modifier.fillMaxWidth()) {
+                        Column() {
+                            Text(text = "하하하")
+                            Text(text = "하하하")
+                            Text(text = "하하하")
+                            Text(text = "하하하")
+                            Text(text = "하하하")
+                        }
+                    }
                 }
             }
         }
@@ -41,8 +49,9 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun PhotographerCard(modifier: Modifier = Modifier) {
-
+fun PhotographerCard(modifier: Modifier = Modifier,
+                     contentSlot: @Composable () -> Unit
+) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(10.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -66,30 +75,37 @@ fun PhotographerCard(modifier: Modifier = Modifier) {
             shape = CircleShape,
             color = MaterialTheme.colors.onSurface.copy(alpha = 0.2f)) {
         }
-        Column(verticalArrangement = Arrangement.spacedBy(3.dp),
+
+        Surface(
             modifier = Modifier
                 .background(Color.Yellow)
                 .weight(0.7f)
-                .fillMaxHeight()
-        ) {
-            Text("Alfred Sisley", fontWeight = FontWeight.Bold,
-                modifier = Modifier
-                    .background(Purple500)
-                    .weight(0.3f))
-            // LocalContentAlpha is defining opacity level of its children
-            CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                Text("3 minutes ago", style = MaterialTheme.typography.body2,
-                    modifier = Modifier
-                        .background(Color.Green)
-                        .weight(0.3f))
-            }
-            CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                Text("이용불가", style = MaterialTheme.typography.caption,
-                    modifier = Modifier
-                        .background(Purple200)
-                        .weight(0.3f))
-            }
-        }
+                .fillMaxHeight(), content = contentSlot)
+
+//        Column(verticalArrangement = Arrangement.spacedBy(3.dp),
+//            modifier = Modifier
+//                .background(Color.Yellow)
+//                .weight(0.7f)
+//                .fillMaxHeight()
+//        ) {
+//            Text("Alfred Sisley", fontWeight = FontWeight.Bold,
+//                modifier = Modifier
+//                    .background(Purple500)
+//                    .weight(0.3f))
+//            // LocalContentAlpha is defining opacity level of its children
+//            CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+//                Text("3 minutes ago", style = MaterialTheme.typography.body2,
+//                    modifier = Modifier
+//                        .background(Color.Green)
+//                        .weight(0.3f))
+//            }
+//            CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+//                Text("이용불가", style = MaterialTheme.typography.caption,
+//                    modifier = Modifier
+//                        .background(Purple200)
+//                        .weight(0.3f))
+//            }
+//        }
     }
 
 
@@ -104,6 +120,8 @@ fun Greeting(name: String) {
 @Composable
 fun PhotographerCardPreview() {
     Day_02Theme {
-        PhotographerCard(modifier = Modifier.fillMaxWidth())
+        PhotographerCard(modifier = Modifier.fillMaxWidth()) {
+            Text(text = "하하하")
+        }
     }
 }
