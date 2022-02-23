@@ -10,6 +10,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
@@ -29,23 +32,123 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             Day_02Theme {
+
+                LayoutsCodelab()
+
                 // A surface container using the 'background' color from the theme
-                Surface(
-                    color = MaterialTheme.colors.background
-                ) {
-                    PhotographerCard(modifier = Modifier.fillMaxWidth()) {
-                        Column() {
-                            Text(text = "하하하")
-                            Text(text = "하하하")
-                            Text(text = "하하하")
-                            Text(text = "하하하")
-                            Text(text = "하하하")
-                        }
-                    }
-                }
+//                Surface(
+//                    color = MaterialTheme.colors.background
+//                ) {
+//                    PhotographerCard(modifier = Modifier.fillMaxWidth()) {
+//                        Column() {
+//                            Text(text = "하하하")
+//                            Text(text = "하하하")
+//                            Text(text = "하하하")
+//                            Text(text = "하하하")
+//                            Text(text = "하하하")
+//                        }
+//                    }
+//                }
             }
         }
     }
+}
+
+@Composable
+fun LayoutsCodelab() {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(text = "LayoutsCodelab")
+                },
+                actions = {
+                    IconButton(onClick = {
+                        Log.d("TAG", "LayoutsCodelab: 좋아요 클릭")
+                    }) {
+                        Icon(Icons.Filled.Favorite, contentDescription = null)
+                    }
+
+                    IconButton(onClick = {
+                        Log.d("TAG", "LayoutsCodelab: 홈 클릭")
+                    }) {
+                        Icon(Icons.Filled.Home, contentDescription = null)
+                    }
+                }
+            )
+        },
+        bottomBar = {
+            BottomAppBar {
+                IconButton(onClick = {
+                    Log.d("TAG", "LayoutsCodelab: 좋아요 클릭")
+                }) {
+                    Icon(Icons.Filled.Favorite, contentDescription = null)
+                }
+
+                IconButton(onClick = {
+                    Log.d("TAG", "LayoutsCodelab: 홈 클릭")
+                }) {
+                    Icon(Icons.Filled.Home, contentDescription = null)
+                }
+            }
+        },
+        drawerContent = {
+            IconButton(onClick = {
+                Log.d("TAG", "LayoutsCodelab: 좋아요 클릭")
+            }) {
+                Icon(Icons.Filled.Favorite, contentDescription = null)
+            }
+
+            IconButton(onClick = {
+                Log.d("TAG", "LayoutsCodelab: 홈 클릭")
+            }) {
+                Icon(Icons.Filled.Home, contentDescription = null)
+            }
+        },
+        floatingActionButton = {
+            IconButton(onClick = {
+                Log.d("TAG", "LayoutsCodelab: 좋아요 클릭")
+            }) {
+                Icon(Icons.Filled.Favorite, contentDescription = null)
+            }
+        }
+    ) { innerPadding ->
+        BodyContent(
+            Modifier
+                .padding(innerPadding)
+                .padding(horizontal = 20.dp)
+        ) {
+            SomeText()
+        }
+    }
+}
+
+@Composable
+fun SomeText() {
+    Column() {
+        Text(text = "Hi there!")
+        Text(text = "Thanks for going through the layouts codelab")
+    }
+}
+
+@Composable
+fun BodyContent(modifier: Modifier = Modifier, contentSlot: @Composable () -> Unit) {
+    Surface(
+        color = Blue200,
+        modifier = modifier,
+        content = contentSlot
+    )
+
+//    Surface(
+//        color = Blue200,
+//        modifier = modifier,
+//        content = {
+//            Column() {
+//                Text(text = "Hi there!")
+//                Text(text = "Thanks for going through the Layouts codelab")
+//            }
+//        }
+//    )
 }
 
 @Composable
@@ -120,8 +223,9 @@ fun Greeting(name: String) {
 @Composable
 fun PhotographerCardPreview() {
     Day_02Theme {
-        PhotographerCard(modifier = Modifier.fillMaxWidth()) {
-            Text(text = "하하하")
-        }
+//        PhotographerCard(modifier = Modifier.fillMaxWidth()) {
+//            Text(text = "하하하")
+//        }
+        LayoutsCodelab()
     }
 }
