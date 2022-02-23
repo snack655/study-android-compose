@@ -4,17 +4,21 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,6 +26,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberImagePainter
+import kotlinx.coroutines.launch
 import kr.co.study.day_02.ui.theme.Blue200
 import kr.co.study.day_02.ui.theme.Day_02Theme
 import kr.co.study.day_02.ui.theme.Purple200
@@ -55,7 +61,75 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
+fun ImageListItem(index: Int) {
+    Row(verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(10.dp)
+
+    ) {
+        Image(
+            painter = rememberImagePainter(
+                data = "https://developer.android.com/images/brand/Android_Robot.png"
+            ),
+            contentDescription = "Android Logo",
+            modifier = Modifier.size(50.dp)
+        )
+        Text("Item #$index", style = MaterialTheme.typography.subtitle1)
+    }
+}
+
+@Composable
+fun SimpleList(scrollState: ScrollState) {
+    // We save the scrolling position with this state that can also
+    // be used to programmatically scroll the list
+
+    val getBGColor : (Int) -> Color = { index ->
+        if (index == 0) Color.Red else Color.Yellow
+    }
+
+    Column(Modifier.verticalScroll(scrollState)) {
+        repeat(100) {
+            if (it == 0) {
+
+            }
+            Text(text = "Item #$it",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(getBGColor(it))
+            )
+        }
+    }
+}
+
+@Composable
+fun LazySimpleList(scrollState: LazyListState) {
+    // We save the scrolling position with this state that can also
+    // be used to programmatically scroll the list
+
+    val getBGColor : (Int) -> Color = { index ->
+        if (index == 0) Color.Red else Color.Yellow
+    }
+
+    LazyColumn(state = scrollState) {
+        items(100) {
+//            Text(text = "Item #$it",
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .background(getBGColor(it))
+//            )
+            ImageListItem(index = it)
+        }
+    }
+}
+
+
+@Composable
 fun LayoutsCodelab() {
+
+    val coroutineScope = rememberCoroutineScope()
+
+    val scrollState = rememberScrollState()
+    val lazyListScrollState = rememberLazyListState()
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -108,17 +182,26 @@ fun LayoutsCodelab() {
         floatingActionButton = {
             IconButton(onClick = {
                 Log.d("TAG", "LayoutsCodelab: 좋아요 클릭")
+                coroutineScope.launch {
+//                    scrollState.scrollTo(0)
+//                    scrollState.animateScrollTo(0)
+                    lazyListScrollState.animateScrollToItem(0)
+                }
             }) {
-                Icon(Icons.Filled.Favorite, contentDescription = null)
+                Icon(Icons.Filled.KeyboardArrowUp, contentDescription = null)
             }
         }
     ) { innerPadding ->
         BodyContent(
             Modifier
                 .padding(innerPadding)
+                .fillMaxWidth()
                 .padding(horizontal = 20.dp)
         ) {
-            SomeText()
+            //SomeText()
+            //SimpleList(scrollState)
+            LazySimpleList(scrollState = lazyListScrollState)
+
         }
     }
 }
