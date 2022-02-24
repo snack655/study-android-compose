@@ -39,8 +39,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             Day_02Theme {
 
-                LayoutsCodelab()
-
+                //LayoutsCodelab()
+                //MyColumnTest()
+                MyRowTest()
                 // A surface container using the 'background' color from the theme
 //                Surface(
 //                    color = MaterialTheme.colors.background
@@ -56,6 +57,31 @@ class MainActivity : ComponentActivity() {
 //                    }
 //                }
             }
+        }
+    }
+}
+
+@Composable
+fun MyColumnTest() {
+    Scaffold {
+        MyOwnColumn(modifier = Modifier.background(Color.Yellow)) {
+            Text(text = "gkasjfkdsjfklas")
+            Text(text = "gkasjfkdsjfklasasdf")
+            Text(text = "gkasjfklas")
+            Text(text = "gkasjfkdsjfklasasdfasdfdf")
+            Text(text = "gkasjfk")
+            Text(text = "gkasjfkdsjfklasffffff")
+        }
+    }
+}
+
+@Composable
+fun MyRowTest() {
+    Scaffold() {
+        Row(modifier = Modifier.background(Color.Yellow)) {
+            Text(text = "하나", modifier = Modifier.padding(4.dp))
+            Text(text = "둘", modifier = Modifier.padding(4.dp))
+            Text(text = "셋", modifier = Modifier.padding(4.dp))
         }
     }
 }
