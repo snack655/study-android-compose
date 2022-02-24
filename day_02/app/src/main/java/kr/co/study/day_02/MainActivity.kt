@@ -78,10 +78,16 @@ fun MyColumnTest() {
 @Composable
 fun MyRowTest() {
     Scaffold() {
-        Row(modifier = Modifier.background(Color.Yellow)) {
-            Text(text = "하나", modifier = Modifier.padding(4.dp))
-            Text(text = "둘", modifier = Modifier.padding(4.dp))
-            Text(text = "셋", modifier = Modifier.padding(4.dp))
+        MyOwnRow(modifier = Modifier.background(Color.Yellow)) {
+            Text(text = "하나 하나 하나",
+                modifier = Modifier.padding(4.dp).background(Color.Green).height(100.dp)
+            )
+            Text(text = "둘 둘 둘",
+                modifier = Modifier.padding(4.dp).background(Color.Blue).height(30.dp)
+            )
+            Text(text = "셋",
+                modifier = Modifier.padding(4.dp).background(Color.Magenta)
+            )
         }
     }
 }
