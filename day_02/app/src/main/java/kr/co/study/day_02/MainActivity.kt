@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
                 //LayoutsCodelab()
                 //MyColumnTest()
                 //MyRowTest()
-                StaggeredVerticalGridTest()
+                StaggeredGridGoogleExample()
                 // A surface container using the 'background' color from the theme
 //                Surface(
 //                    color = MaterialTheme.colors.background
@@ -62,6 +62,32 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+val topics = listOf(
+    "Arts & Crafts", "Beauty", "Books", "Business", "Comics", "Culinary",
+    "Design", "Fashion", "Film", "History", "Maths", "Music", "People", "Philosophy",
+    "Religion", "Social sciences", "Technology", "TV", "Writing"
+)
+
+
+@Composable
+fun StaggeredGridGoogleExample(modifier: Modifier = Modifier) {
+    Row(modifier = modifier.horizontalScroll(rememberScrollState())) {
+        StaggeredGrid {
+            for (topic in topics) {
+                Chip(modifier = Modifier.padding(8.dp), text = topic)
+            }
+        }
+    }
+}
+
+//@Preview
+//@Composable
+//fun LayoutsCodelabPreview() {
+//    Day_02Theme() {
+//        BodyContent()
+//    }
+//}
+
 @Composable
 fun StaggeredVerticalGridTest() {
     Scaffold {
@@ -69,12 +95,24 @@ fun StaggeredVerticalGridTest() {
             modifier = Modifier.background(Color.Yellow),
             columnCount = 2
         ) {
-            Text(text = "gkasjfkdsjfklas", modifier = Modifier.padding(4.dp).background(Color.Green))
-            Text(text = "gkasjfkdsjfklasasdf", modifier = Modifier.padding(4.dp).background(Color.Green))
-            Text(text = "gkasjfklas", modifier = Modifier.padding(4.dp).background(Color.Green))
-            Text(text = "gkasjfkdsjfklasasdfasdfdf", modifier = Modifier.padding(4.dp).background(Color.Green))
-            Text(text = "gkasjfk", modifier = Modifier.padding(4.dp).background(Color.Green))
-            Text(text = "gkasjfkdsjfklasffffff", modifier = Modifier.padding(4.dp).background(Color.Green))
+            Text(text = "gkasjfkdsjfklas", modifier = Modifier
+                .padding(4.dp)
+                .background(Color.Green))
+            Text(text = "gkasjfkdsjfklasasdf", modifier = Modifier
+                .padding(4.dp)
+                .background(Color.Green))
+            Text(text = "gkasjfklas", modifier = Modifier
+                .padding(4.dp)
+                .background(Color.Green))
+            Text(text = "gkasjfkdsjfklasasdfasdfdf", modifier = Modifier
+                .padding(4.dp)
+                .background(Color.Green))
+            Text(text = "gkasjfk", modifier = Modifier
+                .padding(4.dp)
+                .background(Color.Green))
+            Text(text = "gkasjfkdsjfklasffffff", modifier = Modifier
+                .padding(4.dp)
+                .background(Color.Green))
         }
     }
 }
