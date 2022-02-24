@@ -49,7 +49,8 @@ class MainActivity : ComponentActivity() {
                 //MyRowTest()
                 //StaggeredGridGoogleExample()
                 //LargeConstraintLayout()
-                DecoupledConstraintLayout()
+                //DecoupledConstraintLayout()
+                TwoTexts(modifier = Modifier, text1 = "오늘도", text2 = "카페")
 
 
                 // A surface container using the 'background' color from the theme
@@ -68,6 +69,42 @@ class MainActivity : ComponentActivity() {
 //                }
             }
         }
+    }
+}
+
+@Composable
+fun TwoTexts(modifier: Modifier = Modifier, text1: String, text2: String) {
+    Row(modifier = modifier.background(Color.Yellow)
+        .height(IntrinsicSize.Min)) {
+        Text(
+            modifier = Modifier
+                .weight(1f)
+                .padding(start = 4.dp)
+                .wrapContentWidth(Alignment.Start),
+            text = text1
+        )
+
+        Text(
+            modifier = Modifier
+                .weight(1f)
+                .padding(start = 4.dp)
+                .height(100.dp)
+                .wrapContentWidth(Alignment.Start),
+            text = "asfdsafdsafasdfasf"
+        )
+
+        Divider(color = Color.Black, modifier = Modifier
+            .fillMaxHeight()
+            .width(1.dp))
+
+        Text(
+            modifier = Modifier
+                .weight(1f)
+                .padding(end = 4.dp)
+                .wrapContentWidth(Alignment.End),
+
+            text = text2
+        )
     }
 }
 
@@ -578,7 +615,7 @@ fun PhotographerCardPreview() {
 //            Text(text = "하하하")
 //        }
         //StaggeredGridGoogleExample()
-
-        DecoupledConstraintLayout()
+        //DecoupledConstraintLayout()
+        TwoTexts(text1 = "테스트", text2 = "입니다.")
     }
 }
