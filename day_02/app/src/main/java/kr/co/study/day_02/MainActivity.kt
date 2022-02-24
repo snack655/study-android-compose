@@ -41,7 +41,8 @@ class MainActivity : ComponentActivity() {
 
                 //LayoutsCodelab()
                 //MyColumnTest()
-                MyRowTest()
+                //MyRowTest()
+                StaggeredVerticalGridTest()
                 // A surface container using the 'background' color from the theme
 //                Surface(
 //                    color = MaterialTheme.colors.background
@@ -62,15 +63,18 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MyColumnTest() {
+fun StaggeredVerticalGridTest() {
     Scaffold {
-        MyOwnColumn(modifier = Modifier.background(Color.Yellow)) {
-            Text(text = "gkasjfkdsjfklas")
-            Text(text = "gkasjfkdsjfklasasdf")
-            Text(text = "gkasjfklas")
-            Text(text = "gkasjfkdsjfklasasdfasdfdf")
-            Text(text = "gkasjfk")
-            Text(text = "gkasjfkdsjfklasffffff")
+        StaggeredVerticalGrid(
+            modifier = Modifier.background(Color.Yellow),
+            columnCount = 2
+        ) {
+            Text(text = "gkasjfkdsjfklas", modifier = Modifier.padding(4.dp).background(Color.Green))
+            Text(text = "gkasjfkdsjfklasasdf", modifier = Modifier.padding(4.dp).background(Color.Green))
+            Text(text = "gkasjfklas", modifier = Modifier.padding(4.dp).background(Color.Green))
+            Text(text = "gkasjfkdsjfklasasdfasdfdf", modifier = Modifier.padding(4.dp).background(Color.Green))
+            Text(text = "gkasjfk", modifier = Modifier.padding(4.dp).background(Color.Green))
+            Text(text = "gkasjfkdsjfklasffffff", modifier = Modifier.padding(4.dp).background(Color.Green))
         }
     }
 }
@@ -80,13 +84,21 @@ fun MyRowTest() {
     Scaffold() {
         MyOwnRow(modifier = Modifier.background(Color.Yellow)) {
             Text(text = "하나 하나 하나",
-                modifier = Modifier.padding(4.dp).background(Color.Green).height(100.dp)
+                modifier = Modifier
+                    .padding(4.dp)
+                    .background(Color.Green)
+                    .height(100.dp)
             )
             Text(text = "둘 둘 둘",
-                modifier = Modifier.padding(4.dp).background(Color.Blue).height(30.dp)
+                modifier = Modifier
+                    .padding(4.dp)
+                    .background(Color.Blue)
+                    .height(30.dp)
             )
             Text(text = "셋",
-                modifier = Modifier.padding(4.dp).background(Color.Magenta)
+                modifier = Modifier
+                    .padding(4.dp)
+                    .background(Color.Magenta)
             )
         }
     }
