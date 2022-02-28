@@ -10,7 +10,7 @@ import kr.cloudike.ssnack655.session.ChatSession
 
 fun Application.configureSecurity() {
     install(Sessions) {
-        cookie<ChatSession>("MY_SESSION")
+        cookie<ChatSession>("SESSION")
     }
 
     intercept(ApplicationCallPipeline.Features) {
