@@ -1,0 +1,1 @@
+rootProject.name = "kr.cloudike.ssnack655.ktor-chat"
