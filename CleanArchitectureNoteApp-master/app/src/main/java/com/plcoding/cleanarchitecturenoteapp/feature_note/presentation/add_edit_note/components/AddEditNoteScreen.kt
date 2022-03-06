@@ -111,6 +111,7 @@ fun AddEditNoteScreen(
                                }
                                viewModel.onEvent(AddEditNoteEvent.ChangeColor(colorInt))
                            }
+
                    )
                }
            }
